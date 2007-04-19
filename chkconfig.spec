@@ -1,7 +1,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.3.30
-Release:	%mkrel 4
+Version:	1.3.34
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
@@ -15,7 +15,7 @@ Patch6:		chkconfig-1.3.25-adddelxinetd.patch
 Patch7:		chkconfig-1.3.4-list.patch
 Patch8:		chkconfig-1.3.4-skip-files-with-dot.patch
 Patch10:	chkconfig-1.3.11-fix-errno-xinetddotd.patch
-Patch11:	chkconfig-1.3.30-lsb.patch
+Patch11:	chkconfig-1.3.34-lsb.patch
 Patch12:	chkconfig-1.3.20-fix-fr.patch
 # (blino) fix priority when adding a LSB service required by another LSB service (#22019)
 Patch13:	chkconfig-1.3.30-targreq.patch
@@ -68,7 +68,7 @@ LIBMHACK=-lm
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make instroot=$RPM_BUILD_ROOT MANDIR=%{_mandir} install
+%makeinstall_std MANDIR=%{_mandir}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d
 for n in 0 1 2 3 4 5 6; do
