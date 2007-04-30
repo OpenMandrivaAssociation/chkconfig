@@ -1,7 +1,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.34
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
@@ -27,6 +27,8 @@ BuildRequires:	newt-devel
 BuildRequires:	popt-devel
 BuildRequires:	slang
 Conflicts:	rpm-helper < 0.6
+# explicit file provides
+Provides:	/sbin/chkconfig
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
