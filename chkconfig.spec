@@ -1,7 +1,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.34
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
@@ -59,6 +59,7 @@ the numerous symbolic links in /etc/rc*.d.
 %patch12 -p1 -b .fix-fr
 %patch13 -p1 -b .targreq
 %patch14 -p1 -b .should
+perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
 
