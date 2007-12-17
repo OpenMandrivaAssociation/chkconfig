@@ -21,7 +21,6 @@ Patch12:	chkconfig-1.3.20-fix-fr.patch
 Patch13:	chkconfig-1.3.30-targreq.patch
 # (blino) handle Should-Start/Should-Stop tags (#28026)
 Patch14:	chkconfig-1.3.30-should.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	popt-devel
