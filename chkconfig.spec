@@ -15,7 +15,7 @@ Patch6:		chkconfig-1.3.25-adddelxinetd.patch
 Patch7:		chkconfig-1.3.4-list.patch
 Patch8:		chkconfig-1.3.4-skip-files-with-dot.patch
 Patch10:	chkconfig-1.3.11-fix-errno-xinetddotd.patch
-Patch11:	chkconfig-1.3.34-lsb.patch
+Patch11:	chkconfig-1.3.37-lsb.patch
 Patch12:	chkconfig-1.3.20-fix-fr.patch
 # (blino) fix priority when adding a LSB service required by another LSB service (#22019)
 Patch13:	chkconfig-1.3.30-targreq.patch
