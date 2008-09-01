@@ -1,11 +1,11 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.3.34
-Release:	%mkrel 6
+Version:	1.3.37
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
-Source0:	ftp://ftp.redhat.com/pub/redhat/code/chkconfig/%{name}-%{version}.tar.bz2
+Source0:	ftp://ftp.redhat.com/pub/redhat/code/chkconfig/%{name}-%{version}.tar.gz
 # zh_TW translation -- GEoff
 Source1:	chkconfig.po
 Patch1:		ntsysv-mdkconf.patch
