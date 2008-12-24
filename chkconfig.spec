@@ -1,7 +1,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.37
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
@@ -53,11 +53,11 @@ the numerous symbolic links in /etc/rc*.d.
 %patch5 -p0 -b .fix
 %patch6 -p1 -b .adddelxinetd
 %patch7 -p1 -b .list
-%patch8 -p1 -b .skip-files-with-dot
-%patch10 -p1 -b .fix-errno-xinetddotd
+%patch8 -p0 -b .skip-files-with-dot
+%patch10 -p0 -b .fix-errno-xinetddotd
 %patch11 -p1 -b .lsb
-%patch12 -p1 -b .fix-fr
-%patch13 -p1 -b .targreq
+%patch12 -p0 -b .fix-fr
+%patch13 -p0 -b .targreq
 %patch14 -p1 -b .should
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
@@ -67,7 +67,7 @@ perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 LIBMHACK=-lm
 %endif
 
-%make RPM_OPT_FLAGS="$RPM_OPT_FLAGS" LIBMHACK=$LIBMHACK
+%make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
