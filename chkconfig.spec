@@ -3,12 +3,11 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.37
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		System/Configuration/Boot and Init
-Url:		ftp://ftp.redhat.com/pub/redhat/code/chkconfig/
-Source0:	ftp://ftp.redhat.com/pub/redhat/code/chkconfig/%{name}-%{version}.tar.gz
-# zh_TW translation -- GEoff
+Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
+Source0:	https://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 Patch1:		ntsysv-mdkconf.patch
 Patch3:		chkconfig-runleveldir.patch
@@ -23,6 +22,8 @@ Patch12:	chkconfig-1.3.20-fix-fr.patch
 Patch13:	chkconfig-1.3.30-targreq.patch
 # (blino) handle Should-Start/Should-Stop tags (#28026)
 Patch14:	chkconfig-1.3.30-should.patch
+# (fc) introduce runlevel 7, acting as runlevel S
+Patch15:	chkconfig-1.3.37-rc7.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
 BuildRequires:	newt-devel
@@ -61,6 +62,7 @@ the numerous symbolic links in /etc/rc*.d.
 %patch12 -p0 -b .fix-fr
 %patch13 -p0 -b .targreq
 %patch14 -p1 -b .should
+%patch15 -p1 -b .rc7
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
@@ -76,13 +78,14 @@ rm -rf $RPM_BUILD_ROOT
 %makeinstall_std MANDIR=%{_mandir}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d
-for n in 0 1 2 3 4 5 6; do
+for n in 0 1 2 3 4 5 6 7; do
     mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/rc${n}.d
 done
 
 cd $RPM_BUILD_ROOT%{_sysconfdir}/
 ln -s rc.d/init.d init.d
 cd -
+ln -s rc7.d $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/rcS.d
 
 # corrected indonesian language code (it has changed from 'in' to 'id')
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/locale/id/LC_MESSAGES
