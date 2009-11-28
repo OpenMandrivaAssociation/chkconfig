@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.37
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -21,7 +21,7 @@ Patch12:	chkconfig-1.3.20-fix-fr.patch
 # (blino) fix priority when adding a LSB service required by another LSB service (#22019)
 Patch13:	chkconfig-1.3.30-targreq.patch
 # (blino) handle Should-Start/Should-Stop tags (#28026)
-Patch14:	chkconfig-1.3.30-should.patch
+Patch14:	chkconfig-1.3.37-should.patch
 # (fc) introduce runlevel 7, acting as runlevel S
 Patch15:	chkconfig-1.3.37-rc7.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
