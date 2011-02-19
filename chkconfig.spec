@@ -2,28 +2,24 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.3.37
-Release:	%mkrel 6
+Version:	1.3.50
+Release:	%mkrel 0.2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
-Source0:	https://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.gz
+Source0:	https://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.bz2
 Source1:	chkconfig.po
 Patch1:		ntsysv-mdkconf.patch
 Patch3:		chkconfig-runleveldir.patch
 Patch5:		chkconfig-fix.patch
-Patch6:		chkconfig-1.3.25-adddelxinetd.patch
-Patch7:		chkconfig-1.3.4-list.patch
-Patch8:		chkconfig-1.3.4-skip-files-with-dot.patch
+Patch6:		chkconfig-1.3.50-adddelxinetd.patch
+Patch7:		chkconfig-1.3.50-list.patch
+Patch8:		chkconfig-1.3.50-skip-files-with-dot.patch
 Patch10:	chkconfig-1.3.11-fix-errno-xinetddotd.patch
-Patch11:	chkconfig-1.3.37-lsb.patch
-Patch12:	chkconfig-1.3.20-fix-fr.patch
 # (blino) fix priority when adding a LSB service required by another LSB service (#22019)
-Patch13:	chkconfig-1.3.30-targreq.patch
-# (blino) handle Should-Start/Should-Stop tags (#28026)
-Patch14:	chkconfig-1.3.37-should.patch
+Patch13:	chkconfig-1.3.50-targreq.patch
 # (fc) introduce runlevel 7, acting as runlevel S
-Patch15:	chkconfig-1.3.37-rc7.patch
+Patch15:	chkconfig-1.3.50-rc7.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
 BuildRequires:	newt-devel
@@ -51,17 +47,14 @@ the numerous symbolic links in /etc/rc*.d.
 
 %prep
 %setup -q
-%patch1 -p0 -b .mdkconf
+%patch1 -p1 -b .mdkconf
 %patch3 -p1 -b .runleveldir
-%patch5 -p0 -b .fix
+%patch5 -p1 -b .fix
 %patch6 -p1 -b .adddelxinetd
 %patch7 -p1 -b .list
-%patch8 -p0 -b .skip-files-with-dot
+%patch8 -p1 -b .skip-files-with-dot
 %patch10 -p0 -b .fix-errno-xinetddotd
-%patch11 -p1 -b .lsb
-%patch12 -p0 -b .fix-fr
-%patch13 -p0 -b .targreq
-%patch14 -p1 -b .should
+%patch13 -p1 -b .targreq
 %patch15 -p1 -b .rc7
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
