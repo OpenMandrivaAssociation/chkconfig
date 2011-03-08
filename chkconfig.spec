@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.50
-Release:	%mkrel 0.2
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -20,6 +20,11 @@ Patch10:	chkconfig-1.3.11-fix-errno-xinetddotd.patch
 Patch13:	chkconfig-1.3.50-targreq.patch
 # (fc) introduce runlevel 7, acting as runlevel S
 Patch15:	chkconfig-1.3.50-rc7.patch
+
+# upstream patches
+# (bor) update to current GIT with --no-redirect and proper systemd check
+Patch100:	chkconfig-1.3.50-systemd-no-redirect.patch
+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
 BuildRequires:	newt-devel
@@ -56,6 +61,7 @@ the numerous symbolic links in /etc/rc*.d.
 %patch10 -p0 -b .fix-errno-xinetddotd
 %patch13 -p1 -b .targreq
 %patch15 -p1 -b .rc7
+%patch100 -p1 -b .no_redirect
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
