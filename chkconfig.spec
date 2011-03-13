@@ -2,7 +2,7 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.3.50
+Version:	1.3.51
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Configuration/Boot and Init
@@ -22,8 +22,6 @@ Patch13:	chkconfig-1.3.50-targreq.patch
 Patch15:	chkconfig-1.3.50-rc7.patch
 
 # upstream patches
-# (bor) update to current GIT with --no-redirect and proper systemd check
-Patch100:	chkconfig-1.3.50-systemd-no-redirect.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
@@ -61,7 +59,6 @@ the numerous symbolic links in /etc/rc*.d.
 %patch10 -p0 -b .fix-errno-xinetddotd
 %patch13 -p1 -b .targreq
 %patch15 -p1 -b .rc7
-%patch100 -p1 -b .no_redirect
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
