@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.51
-Release:	%mkrel 2
+Release:	3
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -107,7 +107,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 /sbin/chkconfig
 %{_mandir}/man8/chkconfig.8*
-%dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
 %{_sysconfdir}/init.d
 
