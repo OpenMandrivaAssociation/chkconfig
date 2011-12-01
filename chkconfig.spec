@@ -70,38 +70,38 @@ LIBMHACK=-lm
 %make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %makeinstall_std MANDIR=%{_mandir}
 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d
+mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
 for n in 0 1 2 3 4 5 6 7; do
-    mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/rc${n}.d
+    mkdir -p %{buildroot}%{_sysconfdir}/rc.d/rc${n}.d
 done
 
-cd $RPM_BUILD_ROOT%{_sysconfdir}/
+cd %{buildroot}%{_sysconfdir}/
 ln -s rc.d/init.d init.d
 cd -
-ln -s rc7.d $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/rcS.d
+ln -s rc7.d %{buildroot}%{_sysconfdir}/rc.d/rcS.d
 
 # corrected indonesian language code (it has changed from 'in' to 'id')
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/locale/id/LC_MESSAGES
-mv $RPM_BUILD_ROOT%{_datadir}/locale/{in,in_ID}/LC_MESSAGES/* \
-	$RPM_BUILD_ROOT%{_datadir}/locale/id/LC_MESSAGES || :
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{in,in_ID} || :
+mkdir -p %{buildroot}%{_datadir}/locale/id/LC_MESSAGES
+mv %{buildroot}%{_datadir}/locale/{in,in_ID}/LC_MESSAGES/* \
+	%{buildroot}%{_datadir}/locale/id/LC_MESSAGES || :
+rm -rf %{buildroot}%{_datadir}/locale/{in,in_ID} || :
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES
-msgfmt %SOURCE1 -o $RPM_BUILD_ROOT%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkconfig.mo
+mkdir -p %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES
+msgfmt %SOURCE1 -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkconfig.mo
 
 # Geoff 20020623 -- zh is incorrect for locale and there's nothing in it anyway
-rm -fr $RPM_BUILD_ROOT%_datadir/locale/zh
+rm -fr %{buildroot}%_datadir/locale/zh
 
 # we use our own alternative system
-rm -f $RPM_BUILD_ROOT%{_sbindir}/{alternatives,update-alternatives} $RPM_BUILD_ROOT%{_mandir}/man8/alternatives.8*
+rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/alternatives.8*
 
 %find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
