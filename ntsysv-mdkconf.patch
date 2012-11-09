@@ -1,0 +1,58 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ ntsysv.c |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+diff --git a/ntsysv.c b/ntsysv.c
+index 477d01d..14c5940 100644
+--- a/ntsysv.c
++++ b/ntsysv.c
+@@ -282,6 +282,33 @@ int main(int argc, const char ** argv) {
+ 	    { 0, 0, 0, 0, 0 }
+     };
+ 
++    /* Standard Mandrake colors */
++    const struct newtColors colors = {
++	  "cyan", "black", 			/* root fg, bg */
++	  "black", "blue",			/* border fg, bg */
++	  "white", "blue",			/* window fg, bg */
++	  "white", "black",			/* shadow fg, bg */
++	  "white", "blue",			/* title fg, bg */
++	  "yellow", "cyan",			/* button fg, bg */
++	  "white", "cyan",			/* active button fg, bg */
++	  "yellow", "blue",			/* checkbox fg, bg */
++	  "blue", "brown",			/* active checkbox fg, bg */
++	  "yellow", "blue",			/* entry box fg, bg */
++	  "white", "blue",			/* label fg, bg */
++	  "black", "cyan",			/* listbox fg, bg */
++	  "yellow", "cyan",			/* active listbox fg, bg */
++	  "white", "blue",			/* textbox fg, bg */
++	  "cyan", "black",			/* active textbox fg, bg */
++	  "white", "blue",			/* help line */
++	  "yellow", "blue",			/* root text */
++	  "blue",					/* scale full */
++	  "red",					/* scale empty */
++	  "blue", "cyan",				/* disabled entry fg, bg */
++	  "white", "blue",			/* compact button fg, bg */
++	  "yellow", "red",			/* active & sel listbox */
++	  "black", "brown"			/* selected listbox */
++    };
++
+     setlocale(LC_ALL, "");
+     bindtextdomain("chkconfig", "/usr/share/locale");
+     textdomain("chkconfig");
+@@ -318,6 +345,7 @@ int main(int argc, const char ** argv) {
+     }
+ 
+     newtInit();
++    newtSetColors(colors);
+     newtCls();
+ 
+     newtPushHelpLine(NULL);

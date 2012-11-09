@@ -1,0 +1,24 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ chkconfig.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index 686d789..3a0eadf 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -676,6 +676,7 @@ int main(int argc, const char ** argv) {
+ 	    usage();
+ 
+ 	name = basename(name);
++	delService(name, type, -1);
+ 	r = addService(name, type);
+         reloadSystemd();
+ 

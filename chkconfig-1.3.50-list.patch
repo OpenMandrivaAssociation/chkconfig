@@ -1,0 +1,25 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ chkconfig.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index d1b8ea3..8f54262 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -392,7 +392,7 @@ static int showServiceInfo(struct service s, int forgiving) {
+ 	    }
+     }
+ 
+-    if (rc) {
++    if (rc && rc != 2) {
+ 	if (!forgiving)
+ 	    readServiceError(rc, s.name);
+ 	return forgiving ? 0 : 1;

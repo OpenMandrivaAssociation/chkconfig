@@ -1,0 +1,60 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ chkconfig.c |   12 ++----------
+ leveldb.c   |   12 ++----------
+ 2 files changed, 4 insertions(+), 20 deletions(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index 8f54262..0843ef5 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -494,17 +494,9 @@ static int listService(char * item, int type) {
+ 	    while ((ent = readdir(dir))) {
+ 		    const char *dn;
+ 
+-		    /* Skip any file starting with a . */
+-		    if (ent->d_name[0] == '.')	continue;
+-
+ 		    /* Skip files with known bad extensions */
+-		    if ((dn = strrchr(ent->d_name, '.')) != NULL &&
+-			(!strcmp(dn, ".rpmsave") || !strcmp(dn, ".rpmnew") || !strcmp(dn, ".rpmorig") || !strcmp(dn, ".swp")))
+-		      continue;
+-
+-		    dn = ent->d_name + strlen(ent->d_name) - 1;
+-		    if (*dn == '~' || *dn == ',')
+-		      continue;
++		    if (strchr(ent->d_name, '~') || strchr(ent->d_name, ',') ||
++			strchr(ent->d_name, '.')) continue;
+ 
+ 		    if (numServices == numServicesAlloced) {
+ 			    numServicesAlloced += 10;
+diff --git a/leveldb.c b/leveldb.c
+index 10d73ad..5b7f428 100644
+--- a/leveldb.c
++++ b/leveldb.c
+@@ -268,16 +268,8 @@ int readServices(struct service **services) {
+ 	while ((ent = readdir(dir))) {
+ 		const char *dn;
+ 
+-		/* Skip any file starting with a . */
+-		if (ent->d_name[0] == '.')	continue;
+-
+-		/* Skip files with known bad extensions */
+-		if ((dn = strrchr(ent->d_name, '.')) != NULL &&
+-		    (!strcmp(dn, ".rpmsave") || !strcmp(dn, ".rpmnew") || !strcmp(dn, ".rpmorig") || !strcmp(dn, ".swp")))
+-			continue;
+-
+-		dn = ent->d_name + strlen(ent->d_name) - 1;
+-		if (*dn == '~' || *dn == ',')
++		if (strchr(ent->d_name, '~') || strchr(ent->d_name, ',') ||
++				strchr(ent->d_name, '.'))
+ 			continue;
+ 
+ 		sprintf(fn, RUNLEVELS "/init.d/%s", ent->d_name);

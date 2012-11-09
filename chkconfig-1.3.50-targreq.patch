@@ -1,0 +1,65 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ chkconfig.c |   18 +++++++++++-------
+ 1 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index 93cf760..26a7150 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -232,7 +232,8 @@ static int frobOneDependencies(struct service *s, struct service *servs, int num
+ 		}
+ 	}
+ 
+-	if (target || ((s0 != s->sPriority) || (k0 != s->kPriority))) {
++	int resolved = (s0 != s->sPriority) || (k0 != s->kPriority);
++	if (target || resolved) {
+ 		for (i = 0; i < 7; i++) {
+ 			if (isConfigured(s->name, i, NULL, NULL)) {
+ 				int on = isOn(s->name, i);
+@@ -243,7 +244,7 @@ static int frobOneDependencies(struct service *s, struct service *servs, int num
+ 				doSetService(*s, i, ((1<<i) & s->levels));
+ 			}
+ 		}
+-		return 1; /* Resolved something */
++		return resolved; /* Resolved something */
+ 	}
+ 	return 0; /* Didn't resolve anything */
+ }
+@@ -255,6 +256,7 @@ static int frobDependencies(struct service *s) {
+ 	struct service *servs = NULL;
+ 	int numservs = 0;
+ 	int nResolved = 0;
++	int target = -1;
+ 
+ 	numservs = readServices(&servs);
+ 	/* Resolve recursively the other dependancies */
+@@ -263,14 +265,16 @@ static int frobDependencies(struct service *s) {
+ 		int i;
+ 
+ 		for (i = 0; i < numservs ; i++) {
+-			if ((servs+i)->isLSB && strcmp((servs+i)->name, s->name))
+-				nResolved += frobOneDependencies(servs+i, servs, numservs, 0, 0);
++			if (!strcmp((servs+i)->name, s->name))
++			        target = i;
++			if ((servs+i)->isLSB)
++				nResolved += frobOneDependencies(servs+i, servs, numservs, target == i, 0);
+ 		}
+ 	} while (nResolved);
+ 
+-	/* Resolve our target */
+-	if (frobOneDependencies(s, servs, numservs, 1, LSB) == -1)
+-		return 1;
++	/* Update service definition with possibly recomputed prorities */
++	if (target > -1)
++		*s = servs[target];
+ 	return 0;
+ }
+ 

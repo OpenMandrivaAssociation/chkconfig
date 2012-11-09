@@ -1,0 +1,49 @@
+Subject: [PATCH] 
+From: Andrey Borzenkov <arvidjaar@gmail.com>
+
+
+
+Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+
+---
+
+ chkconfig.c |   16 ++++++++++++----
+ 1 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index 4d5f48d..d1b8ea3 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -89,9 +89,14 @@ static int delService(char *name, int type, int level) {
+ 	readServiceError(rc, name);
+ 	return 1;
+     }
+-    if (s.type == TYPE_XINETD) return 0;
+ 
+     checkRoot();
++    
++    if (s.type == TYPE_XINETD) {
++            setXinetdService(s, 0);
++            system("/sbin/service xinetd reload >/dev/null 2>&1");
++            return 0;
++    }
+ 
+     if (LSB && level == -1) {
+ 	numservs = readServices(&services);
+@@ -277,10 +282,13 @@ static int addService(char * name, int type) {
+ 	readServiceError(rc, name);
+ 	return 1;
+     }
+-
+-    if (s.type == TYPE_XINETD) return 0;
++    
+     checkRoot();
+-
++    if (s.type == TYPE_XINETD) {
++	setXinetdService(s, 1);
++	system("/sbin/service xinetd reload >/dev/null 2>&1");
++	return 0;
++    }
+     if (s.isLSB)
+ 		rc = frobDependencies(&s);
+     else
