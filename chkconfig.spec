@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.51
-Release:	3
+Release:	6
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -23,14 +23,14 @@ Patch15:	chkconfig-1.3.50-rc7.patch
 
 # upstream patches
 
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	popt-devel
-BuildRequires:	slang
+BuildRequires:	slang-devel
 Conflicts:	rpm-helper < 0.6
 # explicit file provides
 Provides:	/sbin/chkconfig
+
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
@@ -70,7 +70,6 @@ LIBMHACK=-lm
 %make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std MANDIR=%{_mandir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
@@ -100,18 +99,13 @@ rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_
 
 %find_lang %{name}
 
-%clean
-rm -rf %{buildroot}
-
 %files -f %{name}.lang
-%defattr(-,root,root)
 /sbin/chkconfig
 %{_mandir}/man8/chkconfig.8*
-%dir %{_sysconfdir}/rc.d/rc*
+%dir %{_sysconfdir}/rc.d/*
 %{_sysconfdir}/init.d
 
 %files -n ntsysv
-%defattr(-,root,root)
 %{_sbindir}/ntsysv
 %{_mandir}/man8/ntsysv.8*
 
