@@ -31,7 +31,6 @@ Conflicts:	rpm-helper < 0.6
 # explicit file provides
 Provides:	/sbin/chkconfig
 
-
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
 information for system services.  Chkconfig manipulates the numerous
@@ -95,7 +94,7 @@ msgfmt %SOURCE1 -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkconf
 rm -fr %{buildroot}%_datadir/locale/zh
 
 # we use our own alternative system
-rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/alternatives.8*
+rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/alternatives.8* %{buildroot}%{_mandir}/man8/update-alternatives.8*
 
 %find_lang %{name}
 
