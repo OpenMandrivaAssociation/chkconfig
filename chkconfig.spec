@@ -25,9 +25,8 @@ Patch15:	chkconfig-1.3.50-rc7.patch
 
 BuildRequires:	gettext
 BuildRequires:	newt-devel
-BuildRequires:	popt-devel
-BuildRequires:	slang-devel
-Conflicts:	rpm-helper < 0.6
+BuildRequires:	pkgconfig(popt)
+BuildRequires:	pkgconfig(slang)
 # explicit file provides
 Provides:	/sbin/chkconfig
 
@@ -61,11 +60,6 @@ the numerous symbolic links in /etc/rc*.d.
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
-
-%ifarch sparc
-LIBMHACK=-lm
-%endif
-
 %make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
@@ -107,5 +101,4 @@ rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_
 %files -n ntsysv
 %{_sbindir}/ntsysv
 %{_mandir}/man8/ntsysv.8*
-
 
