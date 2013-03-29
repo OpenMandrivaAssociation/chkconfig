@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.3.51
-Release:	7
+Version:	1.3.60
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -36,7 +36,7 @@ information for system services.  Chkconfig manipulates the numerous
 symbolic links in /etc/rc*.d, to relieve system administrators of some 
 of the drudgery of manually editing the symbolic links.
 
-%package -n	ntsysv
+%package -n ntsysv
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Group:		System/Configuration/Boot and Init
 Requires:	chkconfig
@@ -82,10 +82,10 @@ mv %{buildroot}%{_datadir}/locale/{in,in_ID}/LC_MESSAGES/* \
 rm -rf %{buildroot}%{_datadir}/locale/{in,in_ID} || :
 
 mkdir -p %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES
-msgfmt %SOURCE1 -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkconfig.mo
+msgfmt %{SOURCE1} -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkconfig.mo
 
 # Geoff 20020623 -- zh is incorrect for locale and there's nothing in it anyway
-rm -fr %{buildroot}%_datadir/locale/zh
+rm -fr %{buildroot}%{_datadir}/locale/zh
 
 # we use our own alternative system
 rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/alternatives.8* %{buildroot}%{_mandir}/man8/update-alternatives.8*
@@ -93,9 +93,11 @@ rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_
 %find_lang %{name}
 
 %files -f %{name}.lang
+%dir %{_sysconfdir}/rc.d
+%dir %{_sysconfdir}/rc.d/init.d
+%dir %{_sysconfdir}/rc.d/rc*
 /sbin/chkconfig
 %{_mandir}/man8/chkconfig.8*
-%dir %{_sysconfdir}/rc.d/*
 %{_sysconfdir}/init.d
 
 %files -n ntsysv
