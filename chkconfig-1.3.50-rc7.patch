@@ -5,18 +5,18 @@ Subject: [PATCH] Introduce runlevel 7, acting as runlevel S
 
 Signed-off-by: Frederic Crozat <fcrozat@mandriva.com>
 
----
-
- chkconfig.c |   26 +++++++++++++-------------
- leveldb.c   |    4 ++--
- ntsysv.c    |    8 ++++----
- 3 files changed, 19 insertions(+), 19 deletions(-)
-
-diff --git a/chkconfig.c b/chkconfig.c
-index 2130f61..3fa4228 100644
---- a/chkconfig.c
-+++ b/chkconfig.c
-@@ -125,7 +125,7 @@ static int delService(char *name, int type, int level) {
+--- chkconfig.c~	2012-03-07 12:23:29.000000000 -0500
++++ chkconfig.c	2012-07-28 22:31:35.255726486 -0400
+@@ -114,7 +114,7 @@
+ 		if (services[i].stopDeps) {
+ 			for (j = 0; services[i].stopDeps[j].name ; j++) {
+ 				if (!strcmp(services[i].stopDeps[j].name, s.name)) {
+-				        for (k = 0 ; k <= 6; k++) {
++				        for (k = 0 ; k <= 7; k++) {
+ 				                if (isConfigured(services[i].name, k, NULL, NULL) && !(services[i].currentLevels & (1 << k)))
+ 				                    return 1;
+                                         }
+@@ -124,7 +124,7 @@
  	}
      }
  
@@ -25,16 +25,7 @@ index 2130f61..3fa4228 100644
  	 if (level == -1 || level == j) {
  		 if (!findServiceEntries(name, j, &globres)) {
  			 for (i = 0; i < globres.gl_pathc; i++)
-@@ -158,7 +158,7 @@ static inline int earlierThan(int i, int j) {
- static int isSimilarlyConfigured(struct service s, struct service t, int start) {
-         int i, state_s, state_t;
- 
--        for (i = 0; i <= 6; i ++) {
-+        for (i = 0; i <= 7; i ++) {
-                 if (isConfigured(s.name, i, NULL, NULL)) {
-                         state_s = isOn(s.name, i);
-                 } else {
-@@ -234,7 +234,7 @@ static int frobOneDependencies(struct service *s, struct service *servs, int num
+@@ -233,7 +233,7 @@
  
  	int resolved = (s0 != s->sPriority) || (k0 != s->kPriority);
  	if (target || resolved) {
@@ -43,16 +34,27 @@ index 2130f61..3fa4228 100644
  			if (isConfigured(s->name, i, NULL, NULL)) {
  				int on = isOn(s->name, i);
  				delService(s->name, TYPE_INIT_D, i);
-@@ -296,7 +296,7 @@ static int addService(char * name, int type) {
-     if (s.isLSB)
+@@ -301,16 +301,16 @@
+ 	return 0;
+     }
+     if (s.isLSB) {
+-                for (i = 0; i < 7; i++) {
++                for (i = 0; i < 8; i++) {
+                         if (isConfigured(s.name, i, NULL, NULL))
+                                 break;
+                 }
+-                if (i == 7) {
++                if (i == 8) {
+                         s.currentLevels = s.levels;
+                 }
  		rc = frobDependencies(&s);
-     else
+     } else
 -    for (i = 0; i < 7; i++) {
 +    for (i = 0; i < 8; i++) {
  	if (!isConfigured(name, i, NULL, NULL)) {
  	    if ((1 << i) & s.levels)
  		doSetService(s, i, 1);
-@@ -345,7 +345,7 @@ static int overrideService(char * name, int srvtype) {
+@@ -346,7 +346,7 @@
       * at all.
       */
  
@@ -61,7 +63,7 @@ index 2130f61..3fa4228 100644
  	thisLevelAdded = isConfigured(name, level, &priority, &type);
          thisLevelOn = s.levels & 1<<level;
          if (thisLevelAdded) {
-@@ -365,7 +365,7 @@ static int overrideService(char * name, int srvtype) {
+@@ -366,7 +366,7 @@
      }
  
      if (configured && doChange) {
@@ -70,7 +72,7 @@ index 2130f61..3fa4228 100644
              if (!findServiceEntries(name, level, &globres)) {
                  for (i = 0; i < globres.gl_pathc; i++)
                      unlink(globres.gl_pathv[i]);
-@@ -388,7 +388,7 @@ static int showServiceInfo(struct service s, int forgiving) {
+@@ -389,7 +389,7 @@
  
      if (s.type == TYPE_INIT_D) {
  	    rc = 2;
@@ -79,7 +81,7 @@ index 2130f61..3fa4228 100644
  		    if (isConfigured(s.name, i, NULL, NULL)) {
  			    rc = 0;
  			    break;
-@@ -408,7 +408,7 @@ static int showServiceInfo(struct service s, int forgiving) {
+@@ -409,7 +409,7 @@
  	    return 0;
      }
  
@@ -88,16 +90,7 @@ index 2130f61..3fa4228 100644
  	printf("\t%d:%s", i, isOn(s.name, i) ? _("on") : _("off"));
      }
      printf("\n");
-@@ -439,7 +439,7 @@ static int isXinetdEnabled() {
- 	if (readServiceInfo("xinetd", TYPE_INIT_D, &s, 0)) {
- 		return 0;
- 	}
--	for (i = 0; i < 7; i++) {
-+	for (i = 0; i < 8; i++) {
- 		if (isOn("xinetd", i))
- 		  return 1;
- 	}
-@@ -529,11 +529,11 @@ int setService(char * name, int type, int where, int state) {
+@@ -542,11 +542,11 @@
      struct service s;
  
      if (!where && state != -1) {
@@ -112,8 +105,17 @@ index 2130f61..3fa4228 100644
      }
  
      if ((rc = readServiceInfo(name, type, &s, 0))) {
-@@ -548,7 +548,7 @@ int setService(char * name, int type, int where, int state) {
+@@ -564,7 +564,7 @@
+             else if (state != -2) {
+                 /* If we're enabling/disabling, set currentLevels to
+                    desired state */
+-                for (i = 0; i < 7; i++) {
++                for (i = 0; i < 8; i++) {
+                     if (!((1 << i) & where)) continue;
  
+ 		    if (state == 1)
+@@ -575,7 +575,7 @@
+ 	    }
  	    if (s.isLSB)
  		    frobDependencies(&s);
 -	    for (i = 0; i < 7; i++) {
@@ -121,11 +123,9 @@ index 2130f61..3fa4228 100644
  
  		    if (!((1 << i) & where)) continue;
  
-diff --git a/leveldb.c b/leveldb.c
-index 5b7f428..18f6b02 100644
---- a/leveldb.c
-+++ b/leveldb.c
-@@ -46,7 +46,7 @@ int parseLevels(char * str, int emptyOk) {
+--- leveldb.c~	2012-03-07 12:23:29.000000000 -0500
++++ leveldb.c	2012-07-28 22:36:04.904997521 -0400
+@@ -46,7 +46,7 @@
  	return emptyOk ? 0 : -1;
  
      while (*chptr) {
@@ -134,7 +134,7 @@ index 5b7f428..18f6b02 100644
  	rc |= 1 << (*chptr - '0');
  	chptr++;
      }
-@@ -226,7 +226,7 @@ int readXinetdServiceInfo(char *name, struct service * service) {
+@@ -226,7 +226,7 @@
  			  } while(isspace(*buf));
  
  			if (buf && strncmp(buf,"yes",3)) {
@@ -143,27 +143,18 @@ index 5b7f428..18f6b02 100644
  				if (serv.enabled == -1)
  				  serv.enabled = 1;
  			} else {
-diff --git a/ntsysv.c b/ntsysv.c
-index 14c5940..681f50b 100644
---- a/ntsysv.c
-+++ b/ntsysv.c
-@@ -66,13 +66,13 @@ static int servicesWindow(struct service * services, int numServices,
- 				     services[i].levels ? '*' : ' ', NULL,
- 				     states + i);
- 	} else {
--		for (j = 0; j < 7; j++) {
-+		for (j = 0; j < 8; j++) {
- 			if (levels & (1 << j)) {
- 				if (isOn(services[i].name, j)) break;
- 			}
- 		}
- 		checkboxes[i] = newtCheckbox(-1, i, services[i].name,
--					     (j != 7) ? '*' : ' ', NULL,
-+					     (j != 8) ? '*' : ' ', NULL,
- 					     states + i);
- 	}
- 	newtFormAddComponent(subform, checkboxes[i]);
-@@ -136,7 +136,7 @@ static int servicesWindow(struct service * services, int numServices,
+@@ -731,7 +731,7 @@
+ int whatLevels(char *name) {
+     int i, ret = 0;
+ 
+-    for (i = 0; i < 7; i++) {
++    for (i = 0; i < 8; i++) {
+         ret |= (isOn(name, i) << i);
+     }
+     return ret;
+--- ntsysv.c~	2012-03-07 12:23:29.000000000 -0500
++++ ntsysv.c	2012-07-28 22:33:37.495262502 -0400
+@@ -131,7 +131,7 @@
  	    (!services[i].enabled && states[i] == '*'))
  	      setXinetdService(services[i], states[i] == '*');
        } else {
@@ -172,7 +163,7 @@ index 14c5940..681f50b 100644
  		      if (levels & (1 << j))
  			doSetService(services[i], j, states[i] == '*');
  	      }
-@@ -198,7 +198,7 @@ static int getServices(struct service ** servicesPtr, int * numServicesPtr,
+@@ -196,7 +196,7 @@
  		int i;
  
  		rc = -2;

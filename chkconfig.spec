@@ -56,7 +56,7 @@ the numerous symbolic links in /etc/rc*.d.
 %patch8 -p1 -b .skip-files-with-dot
 %patch10 -p0 -b .fix-errno-xinetddotd
 %patch13 -p1 -b .targreq
-%patch15 -p1 -b .rc7
+%patch15 -p0 -b .rc7
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build

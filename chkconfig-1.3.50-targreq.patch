@@ -33,33 +33,23 @@ index 93cf760..26a7150 100644
  	}
  	return 0; /* Didn't resolve anything */
  }
-@@ -255,6 +256,7 @@ static int frobDependencies(struct service *s) {
+@@ -255,6 +255,7 @@
  	struct service *servs = NULL;
  	int numservs = 0;
  	int nResolved = 0;
 +	int target = -1;
+ 	int i;
  
  	numservs = readServices(&servs);
- 	/* Resolve recursively the other dependancies */
-@@ -263,14 +265,16 @@ static int frobDependencies(struct service *s) {
- 		int i;
+@@ -270,8 +271,10 @@
+ 	  	nResolved = 0;
  
  		for (i = 0; i < numservs ; i++) {
--			if ((servs+i)->isLSB && strcmp((servs+i)->name, s->name))
--				nResolved += frobOneDependencies(servs+i, servs, numservs, 0, 0);
 +			if (!strcmp((servs+i)->name, s->name))
-+			        target = i;
-+			if ((servs+i)->isLSB)
++				target = i;
+ 			if ((servs+i)->isLSB)
+-				nResolved += frobOneDependencies(servs+i, servs, numservs, 0, 0);
 +				nResolved += frobOneDependencies(servs+i, servs, numservs, target == i, 0);
  		}
  	} while (nResolved);
- 
--	/* Resolve our target */
--	if (frobOneDependencies(s, servs, numservs, 1, LSB) == -1)
--		return 1;
-+	/* Update service definition with possibly recomputed prorities */
-+	if (target > -1)
-+		*s = servs[target];
- 	return 0;
- }
  
