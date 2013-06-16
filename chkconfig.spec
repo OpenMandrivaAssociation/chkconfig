@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.60
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -60,6 +60,8 @@ the numerous symbolic links in /etc/rc*.d.
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
+%global optflags %{optflags} -Os
+
 %make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
