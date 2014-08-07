@@ -62,7 +62,7 @@ perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 %build
 %global optflags %{optflags} -Os
 
-%make RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
+%make CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
 %makeinstall_std MANDIR=%{_mandir}
