@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.3.60
-Release:	10
+Release:	11
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -29,6 +29,7 @@ BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
 # explicit file provides
 Provides:	/sbin/chkconfig
+Requires:	initscripts
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
