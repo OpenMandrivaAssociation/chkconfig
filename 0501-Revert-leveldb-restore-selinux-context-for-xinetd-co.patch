@@ -10,11 +10,10 @@ This reverts commit 527b858260911e7139a752a78d78ddead674963a.
  leveldb.c      | 49 +++++--------------------------------------------
  2 files changed, 6 insertions(+), 45 deletions(-)
 
-diff --git a/chkconfig.spec b/chkconfig.spec
-index 9f52c9b..fd334c5 100644
---- a/chkconfig.spec
-+++ b/chkconfig.spec
-@@ -7,7 +7,7 @@ Group: System Environment/Base
+diff -Naur chkconfig-1.7/chkconfig.spec chkconfig-1.7.tpg/chkconfig.spec
+--- chkconfig-1.7/chkconfig.spec	2015-11-24 11:37:02.000000000 +0000
++++ chkconfig-1.7.tpg/chkconfig.spec	2015-12-11 00:50:59.528252099 +0000
+@@ -7,7 +7,7 @@
  URL: https://git.fedorahosted.org/git/chkconfig.git
  Source: http://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.bz2
  BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -23,10 +22,9 @@ index 9f52c9b..fd334c5 100644
  Conflicts: initscripts <= 5.30-1
  
  %description
-diff --git a/leveldb.c b/leveldb.c
-index 1af3a6f..352076c 100644
---- a/leveldb.c
-+++ b/leveldb.c
+diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
+--- chkconfig-1.7/leveldb.c	2015-12-11 00:47:29.213556778 +0000
++++ chkconfig-1.7.tpg/leveldb.c	2015-12-11 00:53:44.531729524 +0000
 @@ -27,9 +27,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -37,7 +35,7 @@ index 1af3a6f..352076c 100644
  
  /* Changes
     1998-09-22 - Arnaldo Carvalho de Melo <acme@conectiva.com.br>
-@@ -41,36 +38,6 @@
+@@ -41,38 +38,6 @@
  
  #include "leveldb.h"
  
@@ -66,23 +64,17 @@ index 1af3a6f..352076c 100644
 -        r = 0;
 -
 - out:
--        selabel_close(hnd);
--        freecon(newcon);
+-        if (hnd)
+-                selabel_close(hnd);
+-        if (newcon)
+-                freecon(newcon);
 -        return r;
 -}
 -
  int parseLevels(char * str, int emptyOk) {
      char * chptr = str;
      int rc = 0;
-@@ -777,7 +744,6 @@ int setXinetdService(struct service s, int on) {
- 	char *buf, *ptr, *tmp;
- 	struct stat sb;
-         mode_t mode;
--        int r;
- 
- 	if (on == -1) {
- 		on = s.enabled ? 1 : 0;
-@@ -824,11 +790,7 @@ int setXinetdService(struct service s, int on) {
+@@ -826,11 +791,7 @@
  	}
  	close(newfd);
  	unlink(oldfname);
@@ -95,7 +87,7 @@ index 1af3a6f..352076c 100644
  }
  
  int doSetService(struct service s, int level, int on) {
-@@ -860,12 +822,11 @@ int doSetService(struct service s, int level, int on) {
+@@ -862,12 +823,11 @@
  
  int systemdIsInit() {
      char *path = realpath("/sbin/init", NULL);
@@ -109,20 +101,3 @@ index 1af3a6f..352076c 100644
      if (!base)
          return 0;
      if (strcmp(base,"systemd"))
-@@ -1257,10 +1218,10 @@ void checkSystemdDependencies(struct service *s) {
-                         }
-                 }
-         }
--
--
-+        
-+       
- finish:
--
-+                
-         if(star) {
-                 for (i = 0; i < n_star; i++)
-                         free(star[i]);
--- 
-2.3.2
-
