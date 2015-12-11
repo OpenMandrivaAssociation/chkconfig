@@ -93,7 +93,6 @@ rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
-%{_sysconfdir}/rc.d/rcS.d
 %{_sysconfdir}/init.d
 
 %files -n ntsysv
