@@ -82,16 +82,18 @@ msgfmt %{SOURCE1} -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkco
 rm -fr %{buildroot}%{_datadir}/locale/zh
 
 # we use our own alternative system
-rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/alternatives.8*
+rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/{update-alternatives,alternatives}.8*
 
 %find_lang %{name}
 
 %files -f %{name}.lang
+%{_sbindir}/chkconfig
+%{_prefix}/lib/systemd/systemd-sysv-install
+%{_mandir}/man8/chkconfig.8*
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
-/sbin/chkconfig
-%{_mandir}/man8/chkconfig.8*
+%{_sysconfdir}/rc.d/rcS.d
 %{_sysconfdir}/init.d
 
 %files -n ntsysv
