@@ -1,20 +1,17 @@
-Subject: [PATCH] 
+From 2cfa706fb8057c7f0eef504365a1cef6f24b5a37 Mon Sep 17 00:00:00 2001
 From: Andrey Borzenkov <arvidjaar@gmail.com>
-
-
-
-Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+Date: Wed, 24 Jun 2015 09:21:55 +0100
+Subject: [PATCH 900/907] netsysv: Use Mandriva colours
 
 ---
-
- ntsysv.c |   28 ++++++++++++++++++++++++++++
- 1 files changed, 28 insertions(+), 0 deletions(-)
+ ntsysv.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/ntsysv.c b/ntsysv.c
-index 477d01d..14c5940 100644
+index cb7a73e..a6a011c 100644
 --- a/ntsysv.c
 +++ b/ntsysv.c
-@@ -282,6 +282,33 @@ int main(int argc, const char ** argv) {
+@@ -421,6 +421,33 @@ int main(int argc, const char ** argv) {
  	    { 0, 0, 0, 0, 0 }
      };
  
@@ -48,7 +45,7 @@ index 477d01d..14c5940 100644
      setlocale(LC_ALL, "");
      bindtextdomain("chkconfig", "/usr/share/locale");
      textdomain("chkconfig");
-@@ -318,6 +345,7 @@ int main(int argc, const char ** argv) {
+@@ -457,6 +484,7 @@ int main(int argc, const char ** argv) {
      }
  
      newtInit();
@@ -56,3 +53,6 @@ index 477d01d..14c5940 100644
      newtCls();
  
      newtPushHelpLine(NULL);
+-- 
+2.3.2
+

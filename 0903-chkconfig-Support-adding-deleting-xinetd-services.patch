@@ -1,20 +1,18 @@
-Subject: [PATCH] 
+From c58f8bc5ce5274fbeba0a526e08d7e06b30c808d Mon Sep 17 00:00:00 2001
 From: Andrey Borzenkov <arvidjaar@gmail.com>
+Date: Wed, 24 Jun 2015 09:27:31 +0100
+Subject: [PATCH 903/907] chkconfig: Support adding/deleting xinetd 'services'
 
-
-
-Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
-
+(cg) We should probably aim to kill xinetd services shipped in MGA
 ---
-
- chkconfig.c |   16 ++++++++++++----
- 1 files changed, 12 insertions(+), 4 deletions(-)
+ chkconfig.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/chkconfig.c b/chkconfig.c
-index 4d5f48d..d1b8ea3 100644
+index d88ab5d..e33302c 100644
 --- a/chkconfig.c
 +++ b/chkconfig.c
-@@ -89,9 +89,14 @@ static int delService(char *name, int type, int level) {
+@@ -103,9 +103,14 @@ static int delService(char *name, int type, int level) {
  	readServiceError(rc, name);
  	return 1;
      }
@@ -30,7 +28,7 @@ index 4d5f48d..d1b8ea3 100644
  
      if (LSB && level == -1) {
  	numservs = readServices(&services);
-@@ -289,9 +289,13 @@
+@@ -305,9 +310,13 @@ static int addService(char * name, int type) {
  	return 1;
      }
  
@@ -45,3 +43,6 @@ index 4d5f48d..d1b8ea3 100644
      if (s.isLSB) {
                  for (i = 0; i < 7; i++) {
                          if (isConfigured(s.name, i, NULL, NULL))
+-- 
+2.3.2
+

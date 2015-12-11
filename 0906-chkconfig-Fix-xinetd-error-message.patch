@@ -1,0 +1,25 @@
+From 1409144cca4a0c89046b60156876263cfbe680bb Mon Sep 17 00:00:00 2001
+From: Oden Eriksson <oden@mandriva.com>
+Date: Wed, 24 Jun 2015 09:56:40 +0100
+Subject: [PATCH 906/907] chkconfig: Fix xinetd error message.
+
+---
+ chkconfig.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chkconfig.c b/chkconfig.c
+index 0a75789..c3e9919 100644
+--- a/chkconfig.c
++++ b/chkconfig.c
+@@ -522,7 +522,7 @@ static int listService(char * item, int type) {
+ 	    printf(_("xinetd based services:\n"));
+ 	    if (!(dir = opendir(XINETDDIR))) {
+ 		    fprintf(stderr, _("failed to open directory %s: %s\n"),
+-			    XINETDDIR, strerror(err));
++			    XINETDDIR, strerror(errno));
+ 		    return 1;
+ 	    }
+ 	    numServices = 0;
+-- 
+2.3.2
+

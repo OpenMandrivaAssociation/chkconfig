@@ -1,21 +1,19 @@
-Subject: [PATCH] 
+From 3eab8167f04ed47f871b34c3898cfa10c6a17fe3 Mon Sep 17 00:00:00 2001
 From: Andrey Borzenkov <arvidjaar@gmail.com>
-
-
-
-Signed-off-by: Andrey Borzenkov <arvidjaar@gmail.com>
+Date: Wed, 24 Jun 2015 09:54:38 +0100
+Subject: [PATCH 905/907] chkconfig: Skip any init script with a dot, comma or
+ tilde anywhere in it's name
 
 ---
-
- chkconfig.c |   12 ++----------
- leveldb.c   |   12 ++----------
+ chkconfig.c | 12 ++----------
+ leveldb.c   | 12 ++----------
  2 files changed, 4 insertions(+), 20 deletions(-)
 
 diff --git a/chkconfig.c b/chkconfig.c
-index 8f54262..0843ef5 100644
+index f70db48..0a75789 100644
 --- a/chkconfig.c
 +++ b/chkconfig.c
-@@ -494,17 +494,9 @@ static int listService(char * item, int type) {
+@@ -532,17 +532,9 @@ static int listService(char * item, int type) {
  	    while ((ent = readdir(dir))) {
  		    const char *dn;
  
@@ -36,7 +34,7 @@ index 8f54262..0843ef5 100644
  		    if (numServices == numServicesAlloced) {
  			    numServicesAlloced += 10;
 diff --git a/leveldb.c b/leveldb.c
-index 10d73ad..5b7f428 100644
+index 352076c..d3ad763 100644
 --- a/leveldb.c
 +++ b/leveldb.c
 @@ -268,16 +268,8 @@ int readServices(struct service **services) {
@@ -58,3 +56,6 @@ index 10d73ad..5b7f428 100644
  			continue;
  
  		sprintf(fn, RUNLEVELS "/init.d/%s", ent->d_name);
+-- 
+2.3.2
+
