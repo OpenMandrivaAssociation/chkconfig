@@ -31,7 +31,7 @@ BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
 # explicit file provides
 Provides:	/sbin/chkconfig
-Requires:	initscripts
+Requires:	initscripts >= 9.64-3
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
@@ -85,8 +85,8 @@ rm -fr %{buildroot}%{_datadir}/locale/zh
 rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/{update-alternatives,alternatives}.8*
 
 # (tpg) compat symlink
-mkdir -p %{_buildroot}/sbin
-ln -sf %{_sbindir}/chkconfig %{_buildroot}/sbin/chkconfig
+mkdir -p %{buildroot}/sbin
+ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 
 %find_lang %{name}
 
