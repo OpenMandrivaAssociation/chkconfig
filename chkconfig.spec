@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
@@ -84,9 +84,13 @@ rm -fr %{buildroot}%{_datadir}/locale/zh
 # we use our own alternative system
 rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/{update-alternatives,alternatives}.8*
 
+# (tpg) compat symlink
+ln -sf %{_sbindir}/chkconfig %{_buildroot}/sbin/chkconfig
+
 %find_lang %{name}
 
 %files -f %{name}.lang
+/sbin/chkconfig
 %{_sbindir}/chkconfig
 %{_prefix}/lib/systemd/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
