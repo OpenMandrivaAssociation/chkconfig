@@ -85,6 +85,7 @@ rm -fr %{buildroot}%{_datadir}/locale/zh
 rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/{update-alternatives,alternatives}.8*
 
 # (tpg) compat symlink
+mkdir -p %{_buildroot}/sbin
 ln -sf %{_sbindir}/chkconfig %{_buildroot}/sbin/chkconfig
 
 %find_lang %{name}
