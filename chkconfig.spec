@@ -2,12 +2,12 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.8
+Version:	1.10
 Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
-Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
-Source0:	https://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.bz2
+Url:		https://github.com/fedora-sysv/chkconfig
+Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 
 # (cg) Revert the selinux stuff for now.
