@@ -1,30 +1,5 @@
-From b9a6c29c308c8ec10fe0e0b229487bd0fa2d8906 Mon Sep 17 00:00:00 2001
-From: Colin Guthrie <colin@mageia.org>
-Date: Tue, 23 Jun 2015 19:13:04 +0100
-Subject: [PATCH 501/501] Revert "leveldb: restore selinux context for xinetd
- conf files"
-
-This reverts commit 527b858260911e7139a752a78d78ddead674963a.
----
- chkconfig.spec |  2 +-
- leveldb.c      | 49 +++++--------------------------------------------
- 2 files changed, 6 insertions(+), 45 deletions(-)
-
-diff -Naur chkconfig-1.7/chkconfig.spec chkconfig-1.7.tpg/chkconfig.spec
---- chkconfig-1.7/chkconfig.spec	2015-11-24 11:37:02.000000000 +0000
-+++ chkconfig-1.7.tpg/chkconfig.spec	2015-12-11 00:50:59.528252099 +0000
-@@ -7,7 +7,7 @@
- URL: https://git.fedorahosted.org/git/chkconfig.git
- Source: http://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.bz2
- BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
--BuildRequires: newt-devel gettext popt-devel libselinux-devel
-+BuildRequires: newt-devel gettext popt-devel
- Conflicts: initscripts <= 5.30-1
- 
- %description
-diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
---- chkconfig-1.7/leveldb.c	2015-12-11 00:47:29.213556778 +0000
-+++ chkconfig-1.7.tpg/leveldb.c	2015-12-11 00:53:44.531729524 +0000
+--- chkconfig-1.7/leveldb.c.orig	2015-12-17 17:55:26.415218260 +0200
++++ chkconfig-1.7/leveldb.c	2015-12-17 18:01:21.602240543 +0200
 @@ -27,9 +27,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -35,7 +10,7 @@ diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
  
  /* Changes
     1998-09-22 - Arnaldo Carvalho de Melo <acme@conectiva.com.br>
-@@ -41,38 +38,6 @@
+@@ -41,47 +38,6 @@
  
  #include "leveldb.h"
  
@@ -68,13 +43,30 @@ diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
 -                selabel_close(hnd);
 -        if (newcon)
 -                freecon(newcon);
+-
+-        /* Lets ignore any errors when selinux is disabled.
+-         * We still want to run the previous code though,
+-         * since we only need selinux policy.
+-         * Selinux itself can be turned off.
+-         */
+-        if (!is_selinux_enabled())
+-                 return 0;
+-
 -        return r;
 -}
 -
  int parseLevels(char * str, int emptyOk) {
      char * chptr = str;
      int rc = 0;
-@@ -826,11 +791,7 @@
+@@ -779,7 +744,6 @@
+ 	char *buf, *ptr, *tmp;
+ 	struct stat sb;
+         mode_t mode;
+-        int r;
+ 
+ 	if (on == -1) {
+ 		on = s.enabled ? 1 : 0;
+@@ -826,11 +790,7 @@
  	}
  	close(newfd);
  	unlink(oldfname);
@@ -87,7 +79,7 @@ diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
  }
  
  int doSetService(struct service s, int level, int on) {
-@@ -862,12 +823,11 @@
+@@ -862,12 +822,11 @@
  
  int systemdIsInit() {
      char *path = realpath("/sbin/init", NULL);
@@ -101,3 +93,17 @@ diff -Naur chkconfig-1.7/leveldb.c chkconfig-1.7.tpg/leveldb.c
      if (!base)
          return 0;
      if (strcmp(base,"systemd"))
+@@ -1259,10 +1218,10 @@
+                         }
+                 }
+         }
+-
+-
++        
++       
+ finish:
+-
++                
+         if(star) {
+                 for (i = 0; i < n_star; i++)
+                         free(star[i]);

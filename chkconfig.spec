@@ -2,12 +2,12 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.7
-Release:	2
+Version:	1.10
+Release:	3
 License:	GPL
 Group:		System/Configuration/Boot and Init
-Url:		http://git.fedorahosted.org/git/?p=chkconfig.git;a=summary
-Source0:	https://fedorahosted.org/releases/c/h/chkconfig/%{name}-%{version}.tar.bz2
+Url:		https://github.com/fedora-sysv/chkconfig
+Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 
 # (cg) Revert the selinux stuff for now.
@@ -31,7 +31,14 @@ BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
 # explicit file provides
 Provides:	/sbin/chkconfig
-Requires:	initscripts >= 9.64-3
+Provides:	%{_sbindir}/chkconfig
+Provides:	%{_sbindir}/alternatives
+Provides:	%{_sbindir}/update-alternatives
+Provides:       update-alternatives = 1.18.4-2
+Obsoletes:      update-alternatives < 1.18.4-2
+Requires:	/bin/sh
+Requires:	coreutils
+Requires:	util-linux
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
@@ -81,8 +88,13 @@ msgfmt %{SOURCE1} -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkco
 # Geoff 20020623 -- zh is incorrect for locale and there's nothing in it anyway
 rm -fr %{buildroot}%{_datadir}/locale/zh
 
-# we use our own alternative system
-rm -f %{buildroot}%{_sbindir}/{alternatives,update-alternatives} %{buildroot}%{_mandir}/man8/{update-alternatives,alternatives}.8*
+# alternatives were historically stored in /var/lib/rpm/alternatives
+mkdir -p %{buildroot}%{_localstatedir}/lib/rpm
+mkdir -p %{buildroot}%{_localstatedir}/log
+mkdir -p %{buildroot}%{_sysconfdir}/alternatives
+mv %{buildroot}%{_localstatedir}/lib/alternatives %{buildroot}%{_localstatedir}/lib/rpm/alternatives
+ln -s rpm/alternatives %{buildroot}%{_localstatedir}/lib/alternatives
+touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 
 # (tpg) compat symlink
 mkdir -p %{buildroot}/sbin
@@ -99,6 +111,14 @@ ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 %dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
 %{_sysconfdir}/init.d
+%{_sbindir}/alternatives
+%attr(0755,root,root) %{_sbindir}/update-alternatives
+%{_mandir}/man8/alternatives.8*
+%{_mandir}/man8/update-alternatives.8*
+%{_localstatedir}/lib/alternatives
+%dir %{_localstatedir}/lib/rpm/alternatives
+%dir %{_sysconfdir}/alternatives
+%ghost %{_localstatedir}/log/update-alternatives.log
 
 %files -n ntsysv
 %{_sbindir}/ntsysv
