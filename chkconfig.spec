@@ -10,21 +10,6 @@ Url:		https://github.com/fedora-sysv/chkconfig
 Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 
-# (cg) Revert the selinux stuff for now.
-Patch0500:	0500-Revert-leveldb-remove-debug-output.patch
-Patch0501:	0501-Revert-leveldb-restore-selinux-context-for-xinetd-co.patch
-Patch0502:	0502-Revert-Makefile-fix-wrongly-behaving-LDFLAGS.patch
-
-# Downstream patches
-Patch0900:	0900-netsysv-Use-Mandriva-colours.patch
-Patch0901:	0901-leveldb-Change-runlevels-dir-to-suit-Mandriva.patch
-Patch0902:	0902-chkconfig-Delete-a-service-before-adding-it.patch
-Patch0903:	0903-chkconfig-Support-adding-deleting-xinetd-services.patch
-Patch0904:	0904-chkconfig-Do-not-show-errors-in-service-lists.patch
-Patch0905:	0905-chkconfig-Skip-any-init-script-with-a-dot-comma-or-t.patch
-Patch0906:	0906-chkconfig-Fix-xinetd-error-message.patch
-Patch0907:	0907-chkconfig-Fix-priority-when-adding-a-LSB-service-req.patch
-
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
