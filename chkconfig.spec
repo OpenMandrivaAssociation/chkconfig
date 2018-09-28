@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.10
-Release:	4
+Version:	1.11
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -34,8 +34,8 @@ Provides:	/sbin/chkconfig
 Provides:	%{_sbindir}/chkconfig
 Provides:	%{_sbindir}/alternatives
 Provides:	%{_sbindir}/update-alternatives
-Provides:       update-alternatives = 1.18.4-2
-Obsoletes:      update-alternatives < 1.18.4-2
+Provides:	update-alternatives = 1.18.4-2
+Obsoletes:	update-alternatives < 1.18.4-2
 Requires:	/bin/sh
 Requires:	coreutils
 Requires:	util-linux
@@ -51,21 +51,20 @@ Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Group:		System/Configuration/Boot and Init
 Requires:	chkconfig = %{EVRD}
 
-%description -n	ntsysv
+%description -n ntsysv
 ntsysv updates and queries runlevel information for system services.
 ntsysv relieves system administrators of having to directly manipulate
 the numerous symbolic links in /etc/rc*.d.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 perl -pi -e 's/\bmv\b/mv -f/' po/Makefile
 
 %build
-%make CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
+%make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
 
 %install
-%makeinstall_std MANDIR=%{_mandir} BINDIR=%{_sbindir}
+%make_install MANDIR=%{_mandir} BINDIR=%{_sbindir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
 for n in 0 1 2 3 4 5 6; do
