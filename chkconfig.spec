@@ -9,7 +9,7 @@ Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
 Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
-
+Patch0:		chkconfig-1.11-drop-selinux.patch
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
