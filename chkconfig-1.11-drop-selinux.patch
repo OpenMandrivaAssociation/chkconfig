@@ -1,6 +1,6 @@
 diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
---- chkconfig-1.11/Makefile	2018-09-28 19:41:49.816795184 +0000
-+++ chkconfig-1.11.tpg/Makefile	2018-09-10 13:28:29.000000000 +0000
+--- chkconfig-1.11/Makefile	2018-09-10 13:28:29.000000000 +0000
++++ chkconfig-1.11.tpg/Makefile	2018-09-28 20:44:04.652743538 +0000
 @@ -2,7 +2,7 @@
  TAG = $(VERSION)
  
@@ -26,94 +26,94 @@ diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
  chkconfig.o: chkconfig.c leveldb.h
  	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" -c chkconfig.c
 diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
---- chkconfig-1.11/leveldb.c	2018-09-28 19:52:26.005786387 +0000
-+++ chkconfig-1.11.tpg/leveldb.c	2018-09-10 13:28:29.000000000 +0000
-@@ -19,8 +19,11 @@
+--- chkconfig-1.11/leveldb.c	2018-09-10 13:28:29.000000000 +0000
++++ chkconfig-1.11.tpg/leveldb.c	2018-09-28 20:46:15.674741726 +0000
+@@ -19,11 +19,8 @@
  #include <errno.h>
  #include <fcntl.h>
  #include <glob.h>
-+#include <libgen.h>
+-#include <libgen.h>
  #include <libintl.h>
  #include <locale.h>
-+#include <selinux/label.h>
-+#include <selinux/selinux.h>
+-#include <selinux/label.h>
+-#include <selinux/selinux.h>
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -38,6 +41,47 @@
+@@ -41,47 +38,6 @@
  
  #include "leveldb.h"
  
-+int selinux_restore(const char *name) {
-+    struct selabel_handle *hnd = NULL;
-+    struct stat buf;
-+    security_context_t newcon = NULL;
-+    int r = -1;
-+
-+    hnd = selabel_open(SELABEL_CTX_FILE, NULL, 0);
-+    if (hnd == NULL)
-+        goto out;
-+
-+    r = stat(name, &buf);
-+    if (r < 0)
-+        goto out;
-+
-+    r = selabel_lookup_raw(hnd, &newcon, name, buf.st_mode);
-+    if (r < 0)
-+        goto out;
-+
-+    r = setfilecon_raw(name, newcon);
-+    if (r < 0)
-+        goto out;
-+
-+    r = 0;
-+
-+out:
-+    if (hnd)
-+        selabel_close(hnd);
-+    if (newcon)
-+        freecon(newcon);
-+
-+    /* Lets ignore any errors when selinux is disabled.
-+     * We still want to run the previous code though,
-+     * since we only need selinux policy.
-+     * Selinux itself can be turned off.
-+     */
-+    if (!is_selinux_enabled())
-+        return 0;
-+
-+    return r;
-+}
-+
+-int selinux_restore(const char *name) {
+-    struct selabel_handle *hnd = NULL;
+-    struct stat buf;
+-    security_context_t newcon = NULL;
+-    int r = -1;
+-
+-    hnd = selabel_open(SELABEL_CTX_FILE, NULL, 0);
+-    if (hnd == NULL)
+-        goto out;
+-
+-    r = stat(name, &buf);
+-    if (r < 0)
+-        goto out;
+-
+-    r = selabel_lookup_raw(hnd, &newcon, name, buf.st_mode);
+-    if (r < 0)
+-        goto out;
+-
+-    r = setfilecon_raw(name, newcon);
+-    if (r < 0)
+-        goto out;
+-
+-    r = 0;
+-
+-out:
+-    if (hnd)
+-        selabel_close(hnd);
+-    if (newcon)
+-        freecon(newcon);
+-
+-    /* Lets ignore any errors when selinux is disabled.
+-     * We still want to run the previous code though,
+-     * since we only need selinux policy.
+-     * Selinux itself can be turned off.
+-     */
+-    if (!is_selinux_enabled())
+-        return 0;
+-
+-    return r;
+-}
+-
  int parseLevels(char *str, int emptyOk) {
      char *chptr = str;
      int rc = 0;
-@@ -804,6 +848,7 @@
+@@ -848,7 +804,6 @@
      char *buf, *ptr, *tmp;
      struct stat sb;
      mode_t mode;
-+    int r;
+-    int r;
  
      if (on == -1) {
          on = s.enabled ? 1 : 0;
-@@ -851,6 +896,11 @@
+@@ -896,11 +851,6 @@
      }
      close(newfd);
      unlink(oldfname);
-+    r = rename(newfname, oldfname);
-+    if (selinux_restore(oldfname) != 0)
-+        fprintf(stderr, _("Unable to set selinux context for %s: %s\n"),
-+                oldfname, strerror(errno));
-+    return (r);
+-    r = rename(newfname, oldfname);
+-    if (selinux_restore(oldfname) != 0)
+-        fprintf(stderr, _("Unable to set selinux context for %s: %s\n"),
+-                oldfname, strerror(errno));
+-    return (r);
  }
  
  int doSetService(struct service s, int level, int on) {
-@@ -883,7 +933,7 @@
+@@ -933,7 +883,7 @@
  
  int systemdIsInit() {
      char *path = realpath("/sbin/init", NULL);
--    char *base;
-+    char *base = NULL;
+-    char *base = NULL;
++    char *base;
  
      if (!path)
          return 0;
