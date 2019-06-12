@@ -45,7 +45,7 @@ the numerous symbolic links in /etc/rc*.d.
 %autosetup -p1
 # (tpg) https://issues.openmandriva.org/show_bug.cgi?id=2477
 # https://github.com/fedora-sysv/chkconfig/issues/23
-sed -i -e 's#/usr/lib/systemd/#/lib/systemd/#g' Makefile
+sed -i -e 's#/usr/lib/systemd#/lib/systemd#g' Makefile
 
 %build
 %make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
