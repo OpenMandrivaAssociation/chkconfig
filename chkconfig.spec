@@ -98,7 +98,7 @@ ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 %dir %{_sysconfdir}/rc.d/rc*
 %dir %{_sysconfdir}/init.d
 %{_sbindir}/alternatives
-%attr(0755,root,root) %{_sbindir}/update-alternatives
+%{_sbindir}/update-alternatives
 %{_mandir}/man8/alternatives.8*
 %{_mandir}/man8/update-alternatives.8*
 %{_localstatedir}/lib/alternatives
