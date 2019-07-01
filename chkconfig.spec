@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.11
-Release:	3
+Release:	4
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -96,7 +96,7 @@ ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
-%{_sysconfdir}/init.d
+%dir %{_sysconfdir}/init.d
 %{_sbindir}/alternatives
 %attr(0755,root,root) %{_sbindir}/update-alternatives
 %{_mandir}/man8/alternatives.8*
