@@ -105,7 +105,7 @@ end
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
 %dir %{_sysconfdir}/rc.d/rc*
-%dir %{_sysconfdir}/init.d
+%{_sysconfdir}/init.d
 %{_sbindir}/alternatives
 %{_sbindir}/update-alternatives
 %{_mandir}/man8/alternatives.8*
