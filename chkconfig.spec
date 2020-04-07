@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.11
-Release:	5
+Version:	1.12
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -95,7 +95,6 @@ if st and st.type == "link" and st2 and st2.type == "directory" then
   os.rename(path2, path)
   posix.symlink(path, path2)
 end
-
 
 %files -f %{name}.lang
 /sbin/chkconfig
