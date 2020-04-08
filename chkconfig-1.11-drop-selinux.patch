@@ -1,15 +1,6 @@
-diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
---- chkconfig-1.11/Makefile	2018-09-10 13:28:29.000000000 +0000
-+++ chkconfig-1.11.tpg/Makefile	2018-09-28 20:44:04.652743538 +0000
-@@ -2,7 +2,7 @@
- TAG = $(VERSION)
- 
- CFLAGS=-g -Wall $(RPM_OPT_FLAGS) -D_GNU_SOURCE
--LDFLAGS+=-g
-+LDFLAGS+=-g -lselinux -lsepol
- MAN=chkconfig.8 ntsysv.8 alternatives.8
- PROG=chkconfig
- BINDIR = /sbin
+diff -Naur chkconfig-1.12/Makefile chkconfig-1.12.tpg/Makefile
+--- chkconfig-1.12/Makefile	2020-04-06 12:53:27.000000000 +0000
++++ chkconfig-1.12.tpg/Makefile	2020-04-08 10:34:01.462051637 +0000
 @@ -24,12 +24,12 @@
  	done && test -z "$$fail"
  
@@ -25,9 +16,9 @@ diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
  
  chkconfig.o: chkconfig.c leveldb.h
  	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" -c chkconfig.c
-diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
---- chkconfig-1.11/leveldb.c	2018-09-10 13:28:29.000000000 +0000
-+++ chkconfig-1.11.tpg/leveldb.c	2018-09-28 20:46:15.674741726 +0000
+diff -Naur chkconfig-1.12/leveldb.c chkconfig-1.12.tpg/leveldb.c
+--- chkconfig-1.12/leveldb.c	2020-04-06 12:53:27.000000000 +0000
++++ chkconfig-1.12.tpg/leveldb.c	2020-04-08 12:41:24.099096687 +0000
 @@ -19,11 +19,8 @@
  #include <errno.h>
  #include <fcntl.h>

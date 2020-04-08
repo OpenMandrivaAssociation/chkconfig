@@ -10,6 +10,9 @@ Url:		https://github.com/fedora-sysv/chkconfig
 Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 Patch0:		chkconfig-1.11-drop-selinux.patch
+# (tpg) https://issues.openmandriva.org/show_bug.cgi?id=2477
+# https://github.com/fedora-sysv/chkconfig/issues/23
+Patch1:		chkconfig-1.12-use-systemdutildir.patch
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
@@ -43,9 +46,6 @@ the numerous symbolic links in /etc/rc*.d.
 
 %prep
 %autosetup -p1
-# (tpg) https://issues.openmandriva.org/show_bug.cgi?id=2477
-# https://github.com/fedora-sysv/chkconfig/issues/23
-sed -i -e 's#/usr/lib/systemd#/lib/systemd#g' Makefile
 
 %build
 %make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
