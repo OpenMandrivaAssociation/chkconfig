@@ -2,7 +2,7 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.12
+Version:	1.13
 Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
@@ -46,8 +46,6 @@ the numerous symbolic links in /etc/rc*.d.
 
 %prep
 %autosetup -p1
-# (tpg) fix it
-sed -i -e s'/"msgstr "%s al esist za"/msgstr "%s al esist za\n"/g' po/fur.po
 
 %build
 %make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
