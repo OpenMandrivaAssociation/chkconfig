@@ -17,6 +17,7 @@ BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
+BuildRequires:	pkgconfig(libsystemd)
 # explicit file provides
 Provides:	/sbin/chkconfig
 Provides:	%{_sbindir}/chkconfig
