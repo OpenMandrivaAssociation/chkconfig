@@ -2,7 +2,7 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.13
+Version:	1.14
 Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
@@ -10,9 +10,6 @@ Url:		https://github.com/fedora-sysv/chkconfig
 Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
 Patch0:		chkconfig-1.11-drop-selinux.patch
-# (tpg) https://issues.openmandriva.org/show_bug.cgi?id=2477
-# https://github.com/fedora-sysv/chkconfig/issues/23
-Patch1:		chkconfig-1.12-use-systemdutildir.patch
 BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
@@ -55,13 +52,13 @@ the numerous symbolic links in /etc/rc*.d.
 %make_install MANDIR=%{_mandir} BINDIR=%{_sbindir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
+ln -s rc.d/init.d %{buildroot}%{_sysconfdir}/init.d
 for n in 0 1 2 3 4 5 6; do
     mkdir -p %{buildroot}%{_sysconfdir}/rc.d/rc${n}.d
+    ln -s rc.d/rc${n}.d %{buildroot}%{_sysconfdir}/rc${n}.d
 done
 
-cd %{buildroot}%{_sysconfdir}/
-ln -s rc.d/init.d init.d
-cd -
+mkdir -p %{buildroot}%{_sysconfdir}/chkconfig.d
 
 # corrected indonesian language code (it has changed from 'in' to 'id')
 mkdir -p %{buildroot}%{_datadir}/locale/id/LC_MESSAGES
@@ -102,10 +99,12 @@ end
 %{_sbindir}/chkconfig
 /lib/systemd/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
+%dir %{_sysconfdir}/chkconfig.d
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
-%dir %{_sysconfdir}/rc.d/rc*
 %{_sysconfdir}/init.d
+%{_sysconfdir}/rc[0-6].d
+%{_sysconfdir}/rc.d/rc[0-6].d
 %{_sbindir}/alternatives
 %{_sbindir}/update-alternatives
 %{_mandir}/man8/alternatives.8*
