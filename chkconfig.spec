@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.11
-Release:	3
+Version:	1.14
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -14,6 +14,7 @@ BuildRequires:	gettext
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
+BuildRequires:	pkgconfig(libsystemd)
 # explicit file provides
 Provides:	/sbin/chkconfig
 Provides:	%{_sbindir}/chkconfig
@@ -43,9 +44,6 @@ the numerous symbolic links in /etc/rc*.d.
 
 %prep
 %autosetup -p1
-# (tpg) https://issues.openmandriva.org/show_bug.cgi?id=2477
-# https://github.com/fedora-sysv/chkconfig/issues/23
-sed -i -e 's#/usr/lib/systemd#/lib/systemd#g' Makefile
 
 %build
 %make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
@@ -54,13 +52,13 @@ sed -i -e 's#/usr/lib/systemd#/lib/systemd#g' Makefile
 %make_install MANDIR=%{_mandir} BINDIR=%{_sbindir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
+ln -s rc.d/init.d %{buildroot}%{_sysconfdir}/init.d
 for n in 0 1 2 3 4 5 6; do
     mkdir -p %{buildroot}%{_sysconfdir}/rc.d/rc${n}.d
+    ln -s rc.d/rc${n}.d %{buildroot}%{_sysconfdir}/rc${n}.d
 done
 
-cd %{buildroot}%{_sysconfdir}/
-ln -s rc.d/init.d init.d
-cd -
+mkdir -p %{buildroot}%{_sysconfdir}/chkconfig.d
 
 # corrected indonesian language code (it has changed from 'in' to 'id')
 mkdir -p %{buildroot}%{_datadir}/locale/id/LC_MESSAGES
@@ -74,12 +72,9 @@ msgfmt %{SOURCE1} -o %{buildroot}%{_datadir}/locale/zh_TW.Big5/LC_MESSAGES/chkco
 # Geoff 20020623 -- zh is incorrect for locale and there's nothing in it anyway
 rm -fr %{buildroot}%{_datadir}/locale/zh
 
-# alternatives were historically stored in /var/lib/rpm/alternatives
-mkdir -p %{buildroot}%{_localstatedir}/lib/rpm
+# Create alternatives directories
 mkdir -p %{buildroot}%{_localstatedir}/log
 mkdir -p %{buildroot}%{_sysconfdir}/alternatives
-mv %{buildroot}%{_localstatedir}/lib/alternatives %{buildroot}%{_localstatedir}/lib/rpm/alternatives
-ln -s rpm/alternatives %{buildroot}%{_localstatedir}/lib/alternatives
 touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 
 # (tpg) compat symlink
@@ -88,21 +83,33 @@ ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 
 %find_lang %{name}
 
+%pretrans -p <lua>
+path = "%{_localstatedir}/lib/alternatives"
+path2 = "%{_localstatedir}/lib/rpm/alternatives"
+st = posix.stat(path)
+st2 = posix.stat(path2)
+if st and st.type == "link" and st2 and st2.type == "directory" then
+  os.remove(path)
+  os.rename(path2, path)
+  posix.symlink(path, path2)
+end
+
 %files -f %{name}.lang
 /sbin/chkconfig
 %{_sbindir}/chkconfig
 /lib/systemd/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
+%dir %{_sysconfdir}/chkconfig.d
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
-%dir %{_sysconfdir}/rc.d/rc*
 %{_sysconfdir}/init.d
+%{_sysconfdir}/rc[0-6].d
+%{_sysconfdir}/rc.d/rc[0-6].d
 %{_sbindir}/alternatives
-%attr(0755,root,root) %{_sbindir}/update-alternatives
+%{_sbindir}/update-alternatives
 %{_mandir}/man8/alternatives.8*
 %{_mandir}/man8/update-alternatives.8*
-%{_localstatedir}/lib/alternatives
-%dir %{_localstatedir}/lib/rpm/alternatives
+%dir %{_localstatedir}/lib/alternatives
 %dir %{_sysconfdir}/alternatives
 %ghost %{_localstatedir}/log/update-alternatives.log
 

@@ -1,16 +1,7 @@
-diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
---- chkconfig-1.11/Makefile	2018-09-10 13:28:29.000000000 +0000
-+++ chkconfig-1.11.tpg/Makefile	2018-09-28 20:44:04.652743538 +0000
-@@ -2,7 +2,7 @@
- TAG = $(VERSION)
- 
- CFLAGS=-g -Wall $(RPM_OPT_FLAGS) -D_GNU_SOURCE
--LDFLAGS+=-g
-+LDFLAGS+=-g -lselinux -lsepol
- MAN=chkconfig.8 ntsysv.8 alternatives.8
- PROG=chkconfig
- BINDIR = /sbin
-@@ -24,12 +24,12 @@
+diff -Naur chkconfig-1.14/Makefile chkconfig-1.14.tpg/Makefile
+--- chkconfig-1.14/Makefile	2020-07-17 08:29:53.000000000 +0000
++++ chkconfig-1.14.tpg/Makefile	2020-07-23 11:46:16.490050864 +0000
+@@ -25,12 +25,12 @@
  	done && test -z "$$fail"
  
  chkconfig: $(OBJS)
@@ -25,14 +16,11 @@ diff -Naur chkconfig-1.11/Makefile chkconfig-1.11.tpg/Makefile
  
  chkconfig.o: chkconfig.c leveldb.h
  	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" -c chkconfig.c
-diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
---- chkconfig-1.11/leveldb.c	2018-09-10 13:28:29.000000000 +0000
-+++ chkconfig-1.11.tpg/leveldb.c	2018-09-28 20:46:15.674741726 +0000
-@@ -19,11 +19,8 @@
- #include <errno.h>
- #include <fcntl.h>
- #include <glob.h>
--#include <libgen.h>
+diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
+--- chkconfig-1.14/leveldb.c	2020-07-17 08:29:53.000000000 +0000
++++ chkconfig-1.14.tpg/leveldb.c	2020-07-23 11:48:25.486051625 +0000
+@@ -22,8 +22,6 @@
+ #include <libgen.h>
  #include <libintl.h>
  #include <locale.h>
 -#include <selinux/label.h>
@@ -40,7 +28,7 @@ diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -41,47 +38,6 @@
+@@ -41,47 +39,6 @@
  
  #include "leveldb.h"
  
@@ -88,7 +76,7 @@ diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
  int parseLevels(char *str, int emptyOk) {
      char *chptr = str;
      int rc = 0;
-@@ -848,7 +804,6 @@
+@@ -848,7 +805,6 @@
      char *buf, *ptr, *tmp;
      struct stat sb;
      mode_t mode;
@@ -96,19 +84,19 @@ diff -Naur chkconfig-1.11/leveldb.c chkconfig-1.11.tpg/leveldb.c
  
      if (on == -1) {
          on = s.enabled ? 1 : 0;
-@@ -896,11 +851,6 @@
+@@ -896,11 +852,6 @@
      }
      close(newfd);
      unlink(oldfname);
 -    r = rename(newfname, oldfname);
 -    if (selinux_restore(oldfname) != 0)
--        fprintf(stderr, _("Unable to set selinux context for %s: %s\n"),
+-        fprintf(stderr, _("Unable to set SELinux context for %s: %s\n"),
 -                oldfname, strerror(errno));
 -    return (r);
  }
  
  int doSetService(struct service s, int level, int on) {
-@@ -933,7 +883,7 @@
+@@ -933,7 +884,7 @@
  
  int systemdIsInit() {
      char *path = realpath("/sbin/init", NULL);
