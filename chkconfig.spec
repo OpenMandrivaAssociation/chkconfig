@@ -3,12 +3,14 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.14
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
 Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar.gz
 Source1:	chkconfig.po
+# (tpg) taken from initscripts as it got obsoleted
+Source2:	service
 Patch0:		chkconfig-1.11-drop-selinux.patch
 BuildRequires:	gettext
 BuildRequires:	newt-devel
@@ -22,6 +24,9 @@ Provides:	%{_sbindir}/alternatives
 Provides:	%{_sbindir}/update-alternatives
 Provides:	update-alternatives = 1.18.4-2
 Obsoletes:	update-alternatives < 1.18.4-2
+Provides:	/sbin/service
+Provides:	%{_sbindir}/service
+Conflicts:	initscripts < 11.0-1
 Requires:	/bin/sh
 Requires:	coreutils
 Requires:	util-linux
@@ -81,6 +86,10 @@ touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 mkdir -p %{buildroot}/sbin
 ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
 
+# (tpg) ship service executable for backward compatability
+install -m755 %{SOURCE2} %{buildroot}%{_sbindir}/service
+ln -sf %{_sbindir}/service %{buildroot}/sbin/service
+
 %find_lang %{name}
 
 %pretrans -p <lua>
@@ -97,6 +106,8 @@ end
 %files -f %{name}.lang
 /sbin/chkconfig
 %{_sbindir}/chkconfig
+/sbin/service
+%{_sbindir}/service
 /lib/systemd/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
 %dir %{_sysconfdir}/chkconfig.d
