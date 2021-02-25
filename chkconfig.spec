@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.14
-Release:	2
+Version:	1.15
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
