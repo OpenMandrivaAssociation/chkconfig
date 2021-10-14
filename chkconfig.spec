@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.15
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -118,12 +118,12 @@ end
 %{_sysconfdir}/rc.d/rc[0-6].d
 %{_sbindir}/alternatives
 %{_sbindir}/update-alternatives
-%{_mandir}/man8/alternatives.8*
-%{_mandir}/man8/update-alternatives.8*
+%doc %{_mandir}/man8/alternatives.8*
+%doc %{_mandir}/man8/update-alternatives.8*
 %dir %{_localstatedir}/lib/alternatives
 %dir %{_sysconfdir}/alternatives
 %ghost %{_localstatedir}/log/update-alternatives.log
 
 %files -n ntsysv
 %{_sbindir}/ntsysv
-%{_mandir}/man8/ntsysv.8*
+%doc %{_mandir}/man8/ntsysv.8*
