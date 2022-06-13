@@ -2,8 +2,8 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.15
-Release:	2
+Version:	1.20
+Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -51,7 +51,7 @@ the numerous symbolic links in /etc/rc*.d.
 %autosetup -p1
 
 %build
-%make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{ldflags}"
+%make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{build_ldflags}"
 
 %install
 %make_install MANDIR=%{_mandir} BINDIR=%{_sbindir}
@@ -108,7 +108,7 @@ end
 %{_sbindir}/chkconfig
 /sbin/service
 %{_sbindir}/service
-/lib/systemd/systemd-sysv-install
+%{_systemd_util_dir}/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
 %dir %{_sysconfdir}/chkconfig.d
 %dir %{_sysconfdir}/rc.d
