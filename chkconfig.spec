@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.20
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -27,7 +27,6 @@ Obsoletes:	update-alternatives < 1.18.4-2
 Provides:	/sbin/service
 Provides:	%{_sbindir}/service
 Conflicts:	initscripts < 11.0-1
-Requires:	/bin/sh
 Requires:	coreutils
 Requires:	util-linux
 
@@ -82,13 +81,12 @@ mkdir -p %{buildroot}%{_localstatedir}/log
 mkdir -p %{buildroot}%{_sysconfdir}/alternatives
 touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 
-# (tpg) compat symlink
-mkdir -p %{buildroot}/sbin
-ln -sf %{_sbindir}/chkconfig %{buildroot}/sbin/chkconfig
-
 # (tpg) ship service executable for backward compatability
 install -m755 %{SOURCE2} %{buildroot}%{_sbindir}/service
-ln -sf %{_sbindir}/service %{buildroot}/sbin/service
+
+%if "%{_sbindir}" != "%{_bindir}"
+mv %{buildroot}%{_sbindir} %{buildroot}%{_bindir}
+%endif
 
 %find_lang %{name}
 
@@ -104,10 +102,8 @@ if st and st.type == "link" and st2 and st2.type == "directory" then
 end
 
 %files -f %{name}.lang
-/sbin/chkconfig
-%{_sbindir}/chkconfig
-/sbin/service
-%{_sbindir}/service
+%{_bindir}/chkconfig
+%{_bindir}/service
 %{_systemd_util_dir}/systemd-sysv-install
 %{_mandir}/man8/chkconfig.8*
 %dir %{_sysconfdir}/chkconfig.d
@@ -116,8 +112,8 @@ end
 %{_sysconfdir}/init.d
 %{_sysconfdir}/rc[0-6].d
 %{_sysconfdir}/rc.d/rc[0-6].d
-%{_sbindir}/alternatives
-%{_sbindir}/update-alternatives
+%{_bindir}/alternatives
+%{_bindir}/update-alternatives
 %doc %{_mandir}/man8/alternatives.8*
 %doc %{_mandir}/man8/update-alternatives.8*
 %dir %{_localstatedir}/lib/alternatives
@@ -125,5 +121,5 @@ end
 %ghost %{_localstatedir}/log/update-alternatives.log
 
 %files -n ntsysv
-%{_sbindir}/ntsysv
+%{_bindir}/ntsysv
 %doc %{_mandir}/man8/ntsysv.8*
