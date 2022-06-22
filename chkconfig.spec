@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.20
-Release:	3
+Release:	4
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -53,7 +53,7 @@ the numerous symbolic links in /etc/rc*.d.
 %make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{build_ldflags}"
 
 %install
-%make_install MANDIR=%{_mandir} BINDIR=%{_sbindir}
+%make_install MANDIR=%{_mandir} BINDIR=%{_bindir} SBINDIR=%{_sbindir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/rc.d/init.d
 ln -s rc.d/init.d %{buildroot}%{_sysconfdir}/init.d
@@ -84,10 +84,6 @@ touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 # (tpg) ship service executable for backward compatability
 install -m755 %{SOURCE2} %{buildroot}%{_sbindir}/service
 
-%if "%{_sbindir}" != "%{_bindir}"
-mv %{buildroot}%{_sbindir} %{buildroot}%{_bindir}
-%endif
-
 %find_lang %{name}
 
 %pretrans -p <lua>
@@ -105,7 +101,7 @@ end
 %{_bindir}/chkconfig
 %{_bindir}/service
 %{_systemd_util_dir}/systemd-sysv-install
-%{_mandir}/man8/chkconfig.8*
+%doc %{_mandir}/man8/chkconfig.8*
 %dir %{_sysconfdir}/chkconfig.d
 %dir %{_sysconfdir}/rc.d
 %dir %{_sysconfdir}/rc.d/init.d
