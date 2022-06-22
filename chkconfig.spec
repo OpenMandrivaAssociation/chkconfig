@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.20
-Release:	4
+Release:	5
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -22,6 +22,9 @@ Provides:	/sbin/chkconfig
 Provides:	%{_sbindir}/chkconfig
 Provides:	%{_sbindir}/alternatives
 Provides:	%{_sbindir}/update-alternatives
+Provides:	/usr/sbin/chkconfig
+Provides:	/usr/sbin/alternatives
+Provides:	/usr/sbin/update-alternatives
 Provides:	update-alternatives = 1.18.4-2
 Obsoletes:	update-alternatives < 1.18.4-2
 Provides:	/sbin/service
