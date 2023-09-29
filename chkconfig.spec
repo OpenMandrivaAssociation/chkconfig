@@ -53,7 +53,7 @@ the numerous symbolic links in /etc/rc*.d.
 %autosetup -p1
 
 %build
-%make_build CC=%{__cc} RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{build_ldflags}"
+%make_build CC="%{__cc}" RPM_OPT_FLAGS="%{optflags}" LIBMHACK=$LIBMHACK LDFLAGS="%{build_ldflags}"
 
 %install
 %make_install MANDIR=%{_mandir} BINDIR=%{_bindir} SBINDIR=%{_sbindir}
