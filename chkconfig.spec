@@ -3,7 +3,7 @@
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
 Version:	1.25
-Release:	1
+Release:	2
 License:	GPL
 Group:		System/Configuration/Boot and Init
 Url:		https://github.com/fedora-sysv/chkconfig
@@ -18,20 +18,15 @@ BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
 BuildRequires:	pkgconfig(libsystemd)
 # explicit file provides
-Provides:	/sbin/chkconfig
-Provides:	%{_sbindir}/chkconfig
 Provides:	%{_sbindir}/alternatives
 Provides:	%{_sbindir}/update-alternatives
-Provides:	/usr/sbin/chkconfig
 Provides:	/usr/sbin/alternatives
 Provides:	/usr/sbin/update-alternatives
 Provides:	update-alternatives = 1.18.4-2
 Obsoletes:	update-alternatives < 1.18.4-2
-Provides:	/sbin/service
-Provides:	%{_sbindir}/service
 Conflicts:	initscripts < 11.0-1
 Requires:	coreutils
-Requires:	util-linux
+Requires:	util-linux-core
 
 %description
 Chkconfig is a basic system utility.  It updates and queries runlevel
@@ -87,6 +82,21 @@ touch %{buildroot}%{_localstatedir}/log/update-alternatives.log
 # (tpg) ship service executable for backward compatability
 install -m755 %{SOURCE2} %{buildroot}%{_sbindir}/service
 
+# Drop things that aren't needed anymore these days
+cd %{buildroot}
+rm -rf \
+	.%{_bindir}/chkconfig \
+	.%{_bindir}/service \
+	.%{_systemd_util_dir} \
+	.%{_mandir}/man8/chkconfig.8* \
+	.%{_sysconfdir}/chkconfig.d \
+	.%{_sysconfdir}/rc.d \
+	.%{_sysconfdir}/init.d \
+	.%{_sysconfdir}/rc*.d \
+	.%{_bindir}/ntsysv \
+	.%{_mandir}/man8/ntsysv.8*
+cd -
+
 %find_lang %{name}
 
 %pretrans -p <lua>
@@ -101,16 +111,6 @@ if st and st.type == "link" and st2 and st2.type == "directory" then
 end
 
 %files -f %{name}.lang
-%{_bindir}/chkconfig
-%{_bindir}/service
-%{_systemd_util_dir}/systemd-sysv-install
-%doc %{_mandir}/man8/chkconfig.8*
-%dir %{_sysconfdir}/chkconfig.d
-%dir %{_sysconfdir}/rc.d
-%dir %{_sysconfdir}/rc.d/init.d
-%{_sysconfdir}/init.d
-%{_sysconfdir}/rc[0-6].d
-%{_sysconfdir}/rc.d/rc[0-6].d
 %{_bindir}/alternatives
 %{_bindir}/update-alternatives
 %doc %{_mandir}/man8/alternatives.8*
@@ -118,7 +118,3 @@ end
 %dir %{_localstatedir}/lib/alternatives
 %dir %{_sysconfdir}/alternatives
 %ghost %{_localstatedir}/log/update-alternatives.log
-
-%files -n ntsysv
-%{_bindir}/ntsysv
-%doc %{_mandir}/man8/ntsysv.8*
