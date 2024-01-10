@@ -94,7 +94,8 @@ rm -rf \
 	.%{_sysconfdir}/init.d \
 	.%{_sysconfdir}/rc*.d \
 	.%{_bindir}/ntsysv \
-	.%{_mandir}/man8/ntsysv.8*
+	.%{_mandir}/man8/ntsysv.8* \
+	systemd-sysv-install
 cd -
 
 %find_lang %{name}
