@@ -13,6 +13,7 @@ Source1:	chkconfig.po
 Source2:	service
 Patch0:		chkconfig-1.11-drop-selinux.patch
 BuildRequires:	gettext
+BuildRequires:	locales-extra-charsets
 BuildRequires:	newt-devel
 BuildRequires:	pkgconfig(popt)
 BuildRequires:	pkgconfig(slang)
