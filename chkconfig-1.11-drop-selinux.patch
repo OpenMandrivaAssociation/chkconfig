@@ -1,24 +1,6 @@
-diff -Naur chkconfig-1.14/Makefile chkconfig-1.14.tpg/Makefile
---- chkconfig-1.14/Makefile	2020-07-17 08:29:53.000000000 +0000
-+++ chkconfig-1.14.tpg/Makefile	2020-07-23 11:46:16.490050864 +0000
-@@ -25,12 +25,12 @@
- 	done && test -z "$$fail"
- 
- chkconfig: $(OBJS)
--	$(CC) $(LDFLAGS) -o chkconfig $(OBJS) -lpopt -lselinux -lsepol
-+	$(CC) $(LDFLAGS) -o chkconfig $(OBJS) -lpopt
- 
- alternatives: alternatives.o
- 
- ntsysv: $(NTOBJS)
--	$(CC) $(LDFLAGS) -o ntsysv $(NTOBJS) -lnewt -lpopt $(LIBMHACK) -lselinux -lsepol
-+	$(CC) $(LDFLAGS) -o ntsysv $(NTOBJS) -lnewt -lpopt $(LIBMHACK)
- 
- chkconfig.o: chkconfig.c leveldb.h
- 	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" -c chkconfig.c
-diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
---- chkconfig-1.14/leveldb.c	2020-07-17 08:29:53.000000000 +0000
-+++ chkconfig-1.14.tpg/leveldb.c	2020-07-23 11:48:25.486051625 +0000
+diff -uraN chkconfig-1.33/leveldb.c omv-chkconfig-1.33/leveldb.c
+--- chkconfig-1.33/leveldb.c	2025-05-09 17:47:18.000000000 +0200
++++ omv-chkconfig-1.33/leveldb.c	2025-07-09 23:24:37.041292516 +0200
 @@ -22,8 +22,6 @@
  #include <libgen.h>
  #include <libintl.h>
@@ -28,14 +10,14 @@ diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -41,47 +39,6 @@
+@@ -41,46 +39,6 @@
  
  #include "leveldb.h"
  
 -int selinux_restore(const char *name) {
 -    struct selabel_handle *hnd = NULL;
 -    struct stat buf;
--    security_context_t newcon = NULL;
+-    char *newcon = NULL;
 -    int r = -1;
 -
 -    hnd = selabel_open(SELABEL_CTX_FILE, NULL, 0);
@@ -72,20 +54,19 @@ diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
 -
 -    return r;
 -}
--
+ 
  int parseLevels(char *str, int emptyOk) {
      char *chptr = str;
-     int rc = 0;
-@@ -848,7 +805,6 @@
-     char *buf, *ptr, *tmp;
+@@ -879,7 +837,6 @@
+     char *buf, *ptr, *tmp, *start;
      struct stat sb;
      mode_t mode;
 -    int r;
  
      if (on == -1) {
          on = s.enabled ? 1 : 0;
-@@ -896,11 +852,6 @@
-     }
+@@ -929,11 +886,6 @@
+     free(start);
      close(newfd);
      unlink(oldfname);
 -    r = rename(newfname, oldfname);
@@ -96,7 +77,7 @@ diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
  }
  
  int doSetService(struct service s, int level, int on) {
-@@ -933,7 +884,7 @@
+@@ -966,7 +918,7 @@
  
  int systemdIsInit() {
      char *path = realpath("/sbin/init", NULL);
@@ -105,3 +86,21 @@ diff -Naur chkconfig-1.14/leveldb.c chkconfig-1.14.tpg/leveldb.c
  
      if (!path)
          return 0;
+diff -uraN chkconfig-1.33/Makefile omv-chkconfig-1.33/Makefile
+--- chkconfig-1.33/Makefile	2025-05-09 17:47:18.000000000 +0200
++++ omv-chkconfig-1.33/Makefile	2025-07-09 23:17:50.014851673 +0200
+@@ -27,12 +27,12 @@
+ 	done && test -z "$$fail"
+ 
+ chkconfig: $(OBJS)
+-	$(CC) $(LDFLAGS) -o chkconfig $(OBJS) -lpopt -lselinux -lsepol
++	$(CC) $(LDFLAGS) -o chkconfig $(OBJS) -lpopt
+ 
+ alternatives: alternatives.o
+ 
+ ntsysv: $(NTOBJS)
+-	$(CC) $(LDFLAGS) -o ntsysv $(NTOBJS) -lnewt -lpopt $(LIBMHACK) -lselinux -lsepol
++	$(CC) $(LDFLAGS) -o ntsysv $(NTOBJS) -lnewt -lpopt $(LIBMHACK)
+ 
+ chkconfig.o: chkconfig.c leveldb.h
+ 	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" -c chkconfig.c
