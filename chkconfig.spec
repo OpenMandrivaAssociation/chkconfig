@@ -118,5 +118,5 @@ end
 %doc %{_mandir}/man8/alternatives.8*
 %doc %{_mandir}/man8/update-alternatives.8*
 %dir %{_localstatedir}/lib/alternatives
-%dir %{_sysconfdir}/alternatives
+#dir %{_sysconfdir}/alternatives
 %ghost %{_localstatedir}/log/update-alternatives.log
