@@ -2,7 +2,7 @@
 
 Summary:	A system tool for maintaining the /etc/rc*.d hierarchy
 Name:		chkconfig
-Version:	1.27
+Version:	1.33
 Release:	1
 License:	GPL
 Group:		System/Configuration/Boot and Init
