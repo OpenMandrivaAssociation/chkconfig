@@ -11,7 +11,7 @@ Source0:	https://github.com/fedora-sysv/chkconfig/archive/%{name}-%{version}.tar
 Source1:	chkconfig.po
 # (tpg) taken from initscripts as it got obsoleted
 Source2:	service
-#Patch0:		chkconfig-1.11-drop-selinux.patch
+Patch0:		chkconfig-1.11-drop-selinux.patch
 BuildRequires:	gettext
 BuildRequires:	locales-extra-charsets
 BuildRequires:	newt-devel
