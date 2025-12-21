@@ -12,6 +12,7 @@ Source1:	chkconfig.po
 # (tpg) taken from initscripts as it got obsoleted
 Source2:	service
 Patch0:		chkconfig-1.11-drop-selinux.patch
+BuildRequires:	make
 BuildRequires:	gettext
 BuildRequires:	locales-extra-charsets
 BuildRequires:	newt-devel
